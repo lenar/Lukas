@@ -10,6 +10,7 @@ namespace OE\Lukas\Parser;
 
 use OE\Lukas\Parser\QueryScanner;
 
+use OE\Lukas\QueryTree\QueryItem;
 use OE\Lukas\QueryTree\Text;
 use OE\Lukas\QueryTree\Word;
 use OE\Lukas\QueryTree\ExplicitTerm;
@@ -53,9 +54,9 @@ class QueryParser
      * __construct
      *
      */
-    public function __construct()
+    public function __construct(QueryScanner $queryScanner)
     {
-        $this->scanner = new QueryScanner();
+        $this->scanner = $queryScanner;
         $this->feedback = array();
     }
 
@@ -108,7 +109,7 @@ class QueryParser
      *  word, text, or explicit term.
      * @param integer $tokenType
      * @param string $word
-     * @return OE\Lukas\QueryTree\SingleTerm or false if failed.
+     * @return QueryItem or false if failed.
      */
     protected function readTerm($tokenType, $word)
     {
@@ -184,7 +185,7 @@ class QueryParser
      *  * Expression
      *  * '-' Expression
      * @param integer $tokenType
-     * @return OEPSutil_QueryItem or false if failed.
+     * @return QueryItem or false if failed.
      */
     protected function readNegation($tokenType)
     {
@@ -208,7 +209,7 @@ class QueryParser
      *  * Expression
      *  * Expression OR Expression OR ...
      * @param integer $tokenType
-     * @return OEPSutil_QueryItem or false if failed.
+     * @return QueryItem or false if failed.
      */
     protected function readOrExpressionList($tokenType)
     {
@@ -225,7 +226,7 @@ class QueryParser
 
         if($lastExpression)
         {
-            if(sizeof($expressions) == 1) {
+            if(count($expressions) == 1) {
                 return $expressions[0];
             } else {
                 return new DisjunctiveExpressionList($expressions);
@@ -242,7 +243,7 @@ class QueryParser
      *  * Expression
      *  * Expression Expression ...
      * @param integer $tokenType
-     * @return OEPSutil_QueryItem or false if failed.
+     * @return QueryItem or false if failed.
      */
     protected function readAndExpressionList($tokenType)
     {
@@ -257,7 +258,7 @@ class QueryParser
         switch($this->scanner->getTokenType()) {
             case QueryScanner::RPAREN : 
             case QueryScanner::EOL : 
-                if(sizeof($expressions) == 1) {
+                if(count($expressions) == 1) {
                     return $expressions[0];
                 } else {
                     return new ConjunctiveExpressionList($expressions);
@@ -274,7 +275,7 @@ class QueryParser
      *  Makes the parser read paren closed (sub)query. The passed token
      *  should be the left paren.
      * @param integer $tokenType
-     * @return OEPSutil_QueryItem or false if failed.
+     * @return QueryItem or false if failed.
      */
     protected function readSubQuery($tokenType)
     {   
@@ -292,7 +293,7 @@ class QueryParser
     /**
      * parse
      *  Makes the parser build an expression tree from the given input.
-     * @return OEPSutil_QueryItem or false if failed.
+     * @return QueryItem or false if failed.
      */
     public function parse()
     {

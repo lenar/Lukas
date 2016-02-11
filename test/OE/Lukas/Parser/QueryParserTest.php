@@ -24,7 +24,7 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->parser = new QueryParser( );
+        $this->parser = new QueryParser(new \OE\Lukas\Parser\QueryScanner());
     }
 
     public function tearDown()
