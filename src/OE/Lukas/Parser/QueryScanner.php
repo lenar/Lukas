@@ -43,50 +43,50 @@ class QueryScanner
      *  einde van de input aan.
      * @const integer EOL
      */
-    const EOL = 0;
+    const EOL = 'EOL';
     /**
      * WORD
      *  Constante voor een "Word" token.
      * @const integer WORD 
      */
-    const WORD = 1;
+    const WORD = 'WORD';
     /**
      * LPAREN
      *  Een "(" of "Left paren" token. 
      * @const integer LPAREN
      */
-    const LPAREN = 2;
+    const LPAREN = 'LPAREN';
     /**
      * RPAREN
      *  Staat voor ")", een "right paren" token.
      * @const integer RPAREN
      */
-    const RPAREN = 3;
+    const RPAREN = 'RPAREN';
     /**
      * MINUS
      *  Staat voor "-", een "minus" token.
      * @const integer MINUS
      */
-    const MINUS = 4;
+    const MINUS = 'MINUS';
     /**
      * COLON
      *  Staat voor ":", een "colon"  token.
      * @const integer COLON
      */
-    const COLON = 5;
+    const COLON = 'COLON';
     /**
      * OROP
      *  Staat voor "OR", als woord. Een "OR operator" token.
      * @const integer OROP
      */
-    const OROP = 6;
+    const OROP = 'OROP';
     /**
      * WSPC
      *  Staat voor elke vorm (en hoeveelheid) van spaties, 
      *  een "Whitespace" token.
      * @const integer WSPC
      */
-    const WSPC = 7;
+    const WSPC = 'WHITESPACE';
     /**
      * TEXT
      *  Een "TEXT" token staat voor tekst tussen twee 
@@ -95,7 +95,7 @@ class QueryScanner
      *  en om een volledige parse van de tekst te vermijden.
      * @const integer TEXT
      */
-    const TEXT = 8;
+    const TEXT = 'TEXT';
     /**
      * ILL
      *  Een illegaal karakter, zoals bijvoorbeeld een controle
@@ -103,7 +103,7 @@ class QueryScanner
      *  Deze zouden niet mogen voorkomen.
      * @const integer ILL
      */
-    const ILL = 9;
+    const ILL = 'ILLEGAL';
     /**
      * QUOTE
      *  '"', een quote token staat voor dubbele haakjes.
@@ -113,7 +113,7 @@ class QueryScanner
      *  sluitend dubbel haakje. 
      * @const integer QUOTE
      */
-    const QUOTE = 10;
+    const QUOTE = 'QUOTE';
     /**
      * processed
      *  De input string die al verwerkt is en in tokens terug-
@@ -149,24 +149,6 @@ class QueryScanner
      */
     private $tokenType;
 
-    /**
-     * typestrings
-     *  De tekstuele representatie van de tokens types.
-     * @var array $typestrings
-     */
-    private $typestrings = array (
-        self::EOL => "EOL",
-        self::WORD => "WORD",
-        self::LPAREN => "LPAREN",
-        self::RPAREN => "RPAREN",
-        self::MINUS => "MINUS",
-        self::COLON => "COLON",
-        self::OROP => "OROP",
-        self::WSPC => "WHITESPACE",
-        self::TEXT => "TEXT",
-        self::ILL => "ILLEGAL",
-        self::QUOTE => "QUOTE"
-    );
     /**
      * regEx
      *  De regular expressions per token type die hun token type
@@ -221,6 +203,11 @@ class QueryScanner
         // Dit mag matchen met elk een karakter dat overblijft.
         self::ILL => '#^(.)(.*)#'
     );
+
+    public function addToken($identificator, $regex)
+    {
+        $this->regEx = array_merge([$identificator => $regex], $this->regEx);
+    }
 
     /**
      * getProcessedData
@@ -288,9 +275,9 @@ class QueryScanner
     {
         if($tokenType == null) 
         {
-            $tokenType = $this->tokenType;
+            return $this->tokenType;
         }
-        return $this->typestrings[$tokenType]; 
+        return $tokenType;
     }
 
     /**
