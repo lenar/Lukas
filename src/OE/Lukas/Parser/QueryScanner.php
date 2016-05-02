@@ -206,7 +206,7 @@ class QueryScanner
 
     public function addToken($identificator, $regex)
     {
-        $this->regEx = array_merge([$identificator => $regex], $this->regEx);
+        $this->regEx = array_merge($this->regEx, [$identificator => $regex]);
     }
 
     /**
