@@ -181,9 +181,8 @@ class QueryScanner
         // Dubbele haakjes maken deel uit van de match.
         self::TEXT => '#^(\"[^"]*\")(.*)#',
 
-        // OROP matcht op sleutelwoord "OR" (hoofdletter gevoelig)
-        // indien er geen tekst volgt na "OR".
-        self::OROP => '#^(OR)(\b.*)#',
+        // OROP matches on keyword "OR" (case insensitive).
+        self::OROP => '#^(OR)(\b.*)#i',
 
         // WORD matcht op letters, cijfers, underscores, koppel-
         // tekens en punten (denk bijv. aan dibe_relict.101)
