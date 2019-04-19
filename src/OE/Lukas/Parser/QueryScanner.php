@@ -174,32 +174,32 @@ class QueryScanner
      * @var array $regEx
      */
     private $regEx = array(
-        // WSPC matcht op (veelvuldige) spaties, tabs en newlines.
+        // WSPC matches (multiple) spaces, tabs, and newlines
         self::WSPC => '#^([ \t\n]+)(.*)#',
 
-        // TEXT matcht op alle mogelijke input tussen dubbele haakjes.
-        // Dubbele haakjes maken deel uit van de match.
+        // TEXT matches all possible characters between double quotes,
+        // and the double quotes are included in the match.
         self::TEXT => '#^(\"[^"]*\")(.*)#',
 
         // OROP matches on keyword "OR" (case insensitive).
         self::OROP => '#^(OR)(\b.*)#i',
 
-        // WORD matcht op letters, cijfers, underscores, koppel-
-        // tekens en punten (denk bijv. aan dibe_relict.101)
-        // Kan dus niet matchen op afkappings tekens en accenten
-        // Deze zullen tussen quotes geplaatst moeten worden.
-        self::WORD => '#^([a-zA-Z0-9_][a-zA-Z0-9_\-.]*)(.*)#',
+        // WORD matches letters, numbers, unerscores, linking
+        // characters, and ppoints (e.g. dibe_relict.101)
+        // Cannot match with cut-off characters and accents,
+        // those will need to be placed within quotes
+        self::WORD => '#^([\p{L}\p{N}_][\p{L}\p{N}_\-.%/]*)(.*)#u',
 
-        // parens, haakjes
+        // parentheses (left and right)
         self::LPAREN => '#^(\()(.*)#',
         self::RPAREN => '#^(\))(.*)#',
 
-        // koppelteken, dubbel punt, quote
+        // dashes, colon, double-quotes
         self::MINUS => '#^(-)(.*)#',
         self::COLON => '#^(:)(.*)#',
         self::QUOTE => '#^(\")([^"]*)$#',
 
-        // Dit mag matchen met elk een karakter dat overblijft.
+        // This will match any character that remains
         self::ILL => '#^(.)(.*)#'
     );
 
