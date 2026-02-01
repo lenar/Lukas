@@ -8,6 +8,8 @@
 
 namespace OE\Lukas\QueryTree;
 
+use Traversable;
+
 /**
  * ExpressionList
  *
@@ -49,7 +51,7 @@ abstract class ExpressionList extends QueryItem implements \IteratorAggregate, \
      *
      * @return  \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator( $this->expressions );
     }
