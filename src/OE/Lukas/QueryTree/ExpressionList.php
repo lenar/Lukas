@@ -72,7 +72,7 @@ abstract class ExpressionList extends QueryItem implements \IteratorAggregate, \
      *
      * @return integer
      */
-    public function count()
+    public function count(): int
     {
         return count($this->expressions);
     }
