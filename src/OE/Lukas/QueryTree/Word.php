@@ -33,11 +33,6 @@ class Word extends SimpleTerm
         parent::__construct(QueryScanner::WORD, $word);
     }
 
-    /**
-     * getWord
-     *
-     * @return  void
-     */
     public function getWord()
     {
         return $this->getToken();
